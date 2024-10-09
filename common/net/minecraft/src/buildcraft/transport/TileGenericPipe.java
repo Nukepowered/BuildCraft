@@ -134,6 +134,8 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 			
 			computeConnections();
 			pipe.onNeighborBlockChange(0);
+			CoreProxy.sendToPlayers(this.getUpdatePacket(), worldObj, xCoord, yCoord, zCoord,
+					DefaultProps.NETWORK_UPDATE_RANGE, mod_BuildCraftCore.instance);
 			blockNeighborChange = false;
 		}
 
@@ -295,7 +297,9 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 	}
 
 	@Override
-	public void postPacketHandling(PacketUpdate packet) {}
+	public void postPacketHandling(PacketUpdate packet) {
+		this.computeConnections();
+	}
 
 	@Override
 	public Packet getUpdatePacket() {
@@ -409,12 +413,19 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 				}
 			}
 
-			for (int i = 0; i < tileBuffer.length; ++i)
+			boolean changed = false;
+			for (int i = 0; i < tileBuffer.length; ++i) {
 				if (oldConnections[i] != pipeConnectionsBuffer[i]) {
+					changed = true;
 					Position pos = new Position(xCoord, yCoord, zCoord, Orientations.values()[i]);
 					pos.moveForwards(1.0);
 					worldObj.markBlockAsNeedsUpdate((int) pos.x, (int) pos.y, (int) pos.z);
 				}
+			}
+
+			if (changed) {
+				worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+			}
 		}
 	}
 
