@@ -19,19 +19,7 @@ import net.minecraft.src.buildcraft.api.IPipe;
 import net.minecraft.src.buildcraft.api.IPipe.DrawingState;
 import net.minecraft.src.buildcraft.api.IPipeTile;
 import net.minecraft.src.buildcraft.api.Orientations;
-import net.minecraft.src.buildcraft.core.ClassMapping;
-import net.minecraft.src.buildcraft.core.DefaultProps;
-import net.minecraft.src.buildcraft.core.EntityBlock;
-import net.minecraft.src.buildcraft.core.EntityEnergyLaser;
-import net.minecraft.src.buildcraft.core.EntityLaser;
-import net.minecraft.src.buildcraft.core.EntityRobot;
-import net.minecraft.src.buildcraft.core.IInventoryRenderer;
-import net.minecraft.src.buildcraft.core.ITileBufferHolder;
-import net.minecraft.src.buildcraft.core.RenderEnergyLaser;
-import net.minecraft.src.buildcraft.core.RenderEntityBlock;
-import net.minecraft.src.buildcraft.core.RenderLaser;
-import net.minecraft.src.buildcraft.core.RenderRobot;
-import net.minecraft.src.buildcraft.core.Utils;
+import net.minecraft.src.buildcraft.core.*;
 import net.minecraft.src.buildcraft.transport.TileGenericPipe;
 import net.minecraft.src.forge.MinecraftForgeClient;
 import net.minecraft.src.forge.NetworkMod;
@@ -79,6 +67,7 @@ public class mod_BuildCraftCore extends NetworkMod {
 	}
 
 	public static void initialize() {
+		new ClientProxy();
 		BuildCraftCore.initialize();
 
 		if (!initialized) {

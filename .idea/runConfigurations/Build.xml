@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Build" type="AntRunConfiguration">
-    <antsettings antfile="file://$PROJECT_DIR$/build.xml" target="package">
+    <antsettings antfile="file://$PROJECT_DIR$/build.xml" target="main">
       <property name="BUILD_NUMBER" value="110" />
     </antsettings>
     <method v="2" />

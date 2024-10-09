@@ -37,9 +37,9 @@
         
         <mkdir dir="${download.dir}"/>
         
-        <get src="http://mcp.ocean-labs.de/files/mcp${mcp.version}.zip" dest="${download.dir}" usetimestamp="True"/>
+        <get src="http://mcp.ocean-labs.de/files/mcp${mcp.version}.zip" dest="${download.dir}" usetimestamp="True" skipexisting="true"/>
         <get src="https://maven.minecraftforge.net/net/minecraftforge/forge/${mc.version}-${forge.version}/forge-${mc.version}-${forge.version}-src.zip"
-            dest="${download.dir}" usetimestamp="True"/>
+            dest="${download.dir}" usetimestamp="True" skipexisting="true"/>
         
         <unzip dest="${mcp.dir}">
             <fileset dir="${download.dir}">

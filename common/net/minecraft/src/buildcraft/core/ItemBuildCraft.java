@@ -11,6 +11,7 @@ package net.minecraft.src.buildcraft.core;
 
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.buildcraft.api.APIProxy;
 import net.minecraft.src.buildcraft.core.utils.StringUtil;
 import net.minecraft.src.forge.ITextureProvider;
 
@@ -22,12 +23,16 @@ public class ItemBuildCraft extends Item implements ITextureProvider {
 
 	// @Override Client side only
 	public String getItemDisplayName(ItemStack itemstack) {
-		return StringUtil.localize(getItemNameIS(itemstack));
+		String unlocalized = this.getItemNameIS(itemstack);
+		String localized = StringUtil.localize(unlocalized);
+		return localized != null && !localized.equals(unlocalized) ?
+				unlocalized : SidedProxy.INSTANCE.getItemStackLocalizedName(itemstack);
 	}
 
 	@Override
 	public String getTextureFile() {
 		return DefaultProps.TEXTURE_ITEMS;
 	}
+
 
 }

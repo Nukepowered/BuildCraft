@@ -14,6 +14,7 @@ import java.util.Date;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.buildcraft.core.ClassMapping;
 import net.minecraft.src.buildcraft.core.DefaultProps;
+import net.minecraft.src.buildcraft.core.ServerProxy;
 import net.minecraft.src.forge.NetworkMod;
 
 public class mod_BuildCraftCore extends NetworkMod {
@@ -27,6 +28,7 @@ public class mod_BuildCraftCore extends NetworkMod {
 	BuildCraftCore proxy = new BuildCraftCore();
 
 	public static void initialize() {
+		new ServerProxy();
 		BuildCraftCore.initialize();
 	}
 

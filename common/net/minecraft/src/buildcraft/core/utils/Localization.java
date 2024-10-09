@@ -1,13 +1,15 @@
 package net.minecraft.src.buildcraft.core.utils;
 
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import net.minecraft.src.buildcraft.core.CoreProxy;
 
 /**
  * Simple mod localization class.
- * 
+ *
  * @author Jimeo Wan
  * @license Public domain
  */
@@ -25,7 +27,7 @@ public class Localization {
 	 * Loads the mod's localization files. All language files must be stored in
 	 * "[modname]/lang/", in .properties files. (ex: for the mod 'invtweaks',
 	 * the french translation is in: "invtweaks/lang/fr_FR.properties")
-	 * 
+	 *
 	 * @param modName
 	 *            The mod name
 	 */
@@ -35,14 +37,15 @@ public class Localization {
 
 	/**
 	 * Get a string for the given key, in the currently active translation.
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
 	public synchronized String get(String key) {
 		String currentLanguage = getCurrentLanguage();
-		if (!currentLanguage.equals(loadedLanguage))
+		if (!currentLanguage.equals(loadedLanguage)) {
 			load(currentLanguage);
+		}
 
 		return mappings.getProperty(key, defaultMappings.getProperty(key, key));
 	}
@@ -51,16 +54,26 @@ public class Localization {
 		defaultMappings.clear();
 		mappings.clear();
 		try {
-			InputStream langStream = Localization.class.getResourceAsStream("/lang/buildcraft/" + newLanguage + ".properties");
-			InputStream defaultLangStream = Localization.class.getResourceAsStream("/lang/buildcraft/" + DEFAULT_LANGUAGE
-					+ ".properties");
-			mappings.load((langStream == null) ? defaultLangStream : langStream);
-			defaultMappings.load(defaultLangStream);
-
-			if (langStream != null) {
-				langStream.close();
+			ClassLoader loader = Localization.class.getClassLoader();
+			Enumeration<URL> resources = loader.getResources("/lang/buildcraft/" + newLanguage + ".properties");
+			while (resources.hasMoreElements()) {
+				URL res = resources.nextElement();
+				try (InputStream stream = res.openStream()) {
+					Properties props = new Properties();
+					props.load(stream);
+					this.mappings.putAll(props);
+				}
 			}
-			defaultLangStream.close();
+
+			resources = loader.getResources("/lang/buildcraft/" + DEFAULT_LANGUAGE + ".properties");
+			while (resources.hasMoreElements()) {
+				URL res = resources.nextElement();
+				try (InputStream stream = res.openStream()) {
+					Properties props = new Properties();
+					props.load(stream);
+					this.defaultMappings.putAll(props);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,5 +83,4 @@ public class Localization {
 	private static String getCurrentLanguage() {
 		return CoreProxy.getCurrentLanguage();
 	}
-
 }
