@@ -16,9 +16,12 @@
       
     <property name="clientsrc.dir"       value="${mcp.dir}/src/minecraft"/>
     <property name="serversrc.dir"       value="${mcp.dir}/src/minecraft_server"/>
-          
+
+    <property name="clientbin.dir"       value="${mcp.dir}/bin/minecraft"/>
+
+    <property name="mc.version"         value="1.2.5"/>
     <property name="mcp.version"         value="62"/>
-    <property name="forge.version"       value="3.3.8.152"/>
+    <property name="forge.version"       value="3.3.8.164"/>
     <property name="bc.version"          value="3.1.6"/>
     <property name="bc.version.full"     value="${bc.version}.${BUILD_NUMBER}"/>
     
@@ -35,7 +38,7 @@
         <mkdir dir="${download.dir}"/>
         
         <get src="http://mcp.ocean-labs.de/files/mcp${mcp.version}.zip" dest="${download.dir}" usetimestamp="True"/>
-        <get src="https://dl.dropbox.com/u/28221422/MinecraftForge/forge-${forge.version}/minecraftforge-src-${forge.version}.zip" 
+        <get src="https://maven.minecraftforge.net/net/minecraftforge/forge/${mc.version}-${forge.version}/forge-${mc.version}-${forge.version}-src.zip"
             dest="${download.dir}" usetimestamp="True"/>
         
         <unzip dest="${mcp.dir}">
@@ -46,7 +49,7 @@
         
         <unzip dest="${mcp.dir}">
             <fileset dir="${download.dir}">
-                <include name="minecraftforge-src-*.zip"/>
+                <include name="forge-${mc.version}-*.zip"/>
             </fileset>
         </unzip>
         
@@ -61,7 +64,8 @@
         
         <!-- Install forge -->
         <exec dir="${forge.dir}" executable="cmd" osfamily="windows">
-            <arg line="/c install.cmd"/>
+            <arg line="/c chcp 65001 &amp;
+             install.cmd"/>
         </exec>
         
         <exec dir="${forge.dir}" executable="sh" osfamily="unix">
@@ -70,23 +74,42 @@
         
         <!-- Copy BC source -->
         <copy todir="${clientsrc.dir}">
-            <fileset dir="${src.dir}/buildcraft_client"/>
+            <fileset dir="${src.dir}/buildcraft_client">
+                <exclude name="**/*.iml"/>
+            </fileset>
         </copy>
         <copy todir="${clientsrc.dir}">
             <fileset dir="${src.dir}/common">
                 <exclude name="**/buildcraft/devel"/>
+                <exclude name="**/*.iml"/>
             </fileset>
             <filterset>
                 <filter token="VERSION" value="${bc.version}" />
             </filterset>
         </copy>
+
+        <!-- Copy resoucres -->
+        <copy todir="${clientbin.dir}">
+            <fileset dir="${src.dir}/buildcraft_resources">
+                <exclude name="**/*.iml"/>
+            </fileset>
+        </copy>
+        <copy todir="${clientbin.dir}">
+            <fileset dir="${src.dir}/buildcraft_resources">
+                <exclude name="gfx/*"/>
+                <exclude name="**/*.iml"/>
+            </fileset>
+        </copy>
         
         <copy todir="${serversrc.dir}">
-            <fileset dir="${src.dir}/buildcraft_server"/>
+            <fileset dir="${src.dir}/buildcraft_server">
+                <exclude name="**/*.iml"/>
+            </fileset>
         </copy>
         <copy todir="${serversrc.dir}">
             <fileset dir="${src.dir}/common">
                 <exclude name="**/buildcraft/devel"/>
+                <exclude name="**/*.iml"/>
             </fileset>
             <filterset>
                 <filter token="VERSION" value="${bc.version}" />
@@ -129,7 +152,7 @@
         </copy>
         <copy todir="${classes.dir}/server">
             <fileset dir="${src.dir}/buildcraft_resources">
-                <exclude name="gfx/*"/>
+                <exclude name="gfx/**/*"/>
             </fileset>
         </copy>
         
