@@ -47,6 +47,10 @@ public class Localization {
 			load(currentLanguage);
 		}
 
+		if (key == null) {
+			return "null";
+		}
+
 		return mappings.getProperty(key, defaultMappings.getProperty(key, key));
 	}
 
