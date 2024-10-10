@@ -26,7 +26,7 @@ public class ItemBuildCraft extends Item implements ITextureProvider {
 		String unlocalized = this.getItemNameIS(itemstack);
 		String localized = StringUtil.localize(unlocalized);
 		return localized != null && !localized.equals(unlocalized) ?
-				unlocalized : SidedProxy.INSTANCE.getItemStackLocalizedName(itemstack);
+				localized : SidedProxy.INSTANCE.getItemStackLocalizedName(itemstack);
 	}
 
 	@Override

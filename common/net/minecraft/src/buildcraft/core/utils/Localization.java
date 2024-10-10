@@ -59,7 +59,7 @@ public class Localization {
 		mappings.clear();
 		try {
 			ClassLoader loader = Localization.class.getClassLoader();
-			Enumeration<URL> resources = loader.getResources("/lang/buildcraft/" + newLanguage + ".properties");
+			Enumeration<URL> resources = loader.getResources("lang/buildcraft/" + newLanguage + ".properties");
 			while (resources.hasMoreElements()) {
 				URL res = resources.nextElement();
 				try (InputStream stream = res.openStream()) {
@@ -69,7 +69,7 @@ public class Localization {
 				}
 			}
 
-			resources = loader.getResources("/lang/buildcraft/" + DEFAULT_LANGUAGE + ".properties");
+			resources = loader.getResources("lang/buildcraft/" + DEFAULT_LANGUAGE + ".properties");
 			while (resources.hasMoreElements()) {
 				URL res = resources.nextElement();
 				try (InputStream stream = res.openStream()) {
