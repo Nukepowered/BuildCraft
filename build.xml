@@ -18,12 +18,15 @@
     <property name="serversrc.dir"       value="${mcp.dir}/src/minecraft_server"/>
 
     <property name="clientbin.dir"       value="${mcp.dir}/bin/minecraft"/>
+    <property name="serverbin.dir"       value="${mcp.dir}/bin/minecraft_server"/>
 
     <property name="mc.version"         value="1.2.5"/>
     <property name="mcp.version"         value="62"/>
     <property name="forge.version"       value="3.3.8.164"/>
     <property name="bc.version"          value="3.1.6"/>
     <property name="bc.version.full"     value="${bc.version}.${BUILD_NUMBER}"/>
+
+    <property name="mcpc.file"           value="craftbukkit-1.2.5-R5.0-MCPC-SNAPSHOT-MCP-183.jar"/>
     
     <echo message="Starting build for ${bc.version.full}"/>
 	
@@ -121,20 +124,20 @@
     <target name="compile" depends="setup">
         
         <!-- Recompile -->
-        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
             <arg line="/c recompile.bat"/>
         </exec>
         
-        <exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+        <exec dir="${mcp.dir}" executable="sh" osfamily="unix" failonerror="true">
             <arg value="recompile.sh" />
         </exec>
         
         <!-- Reobf -->
-        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
             <arg line="/c reobfuscate.bat"/>
         </exec>
         
-        <exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+        <exec dir="${mcp.dir}" executable="sh" osfamily="unix" failonerror="true">
             <arg value="reobfuscate.sh" />
         </exec>
         
@@ -157,12 +160,51 @@
         </copy>
         
     </target>
-    
-    <target name="package" depends="compile">
-        
+
+    <target name="compile-bukkit">
+        <mkdir dir="${classes.dir}/bukkit"/>
+        <delete dir="${classes.dir}/server-tmp"/>
+        <copy todir="${classes.dir}/server-tmp">
+            <fileset dir="${serverbin.dir}">
+                <exclude name="**/core/utils/SidedInventoryAdapter.*"/>
+                <exclude name="**/core/utils/SimpleInventory.*"/>
+                <exclude name="**/transport/PipeLogicDiamond.*"/>
+                <include name="**/buildcraft/**/*"/>
+                <include name="**/mod_*"/>
+                <include name="**/BuildCraft*"/>
+            </fileset>
+        </copy>
+
+        <javac destdir="${classes.dir}/bukkit"
+               source="1.8"
+               target="1.8"
+               failonerror="true">
+            <src path="${src.dir}/bukkit"/>
+            <classpath path="${classes.dir}/server-tmp;${src.dir}/${mcpc.file}"/>
+        </javac>
+    </target>
+
+    <target name="package" depends="compile,compile-bukkit">
         <jar destfile="${jar.dir}/buildcraft-client-${bc.version.full}.jar" basedir="${classes.dir}/client"/>
         <jar destfile="${jar.dir}/buildcraft-server-${bc.version.full}.jar" basedir="${classes.dir}/server"/>
-        
+        <jar destfile="${jar.dir}/buildcraft-server-${bc.version.full}-mcpc-obf-raw.jar">
+            <fileset dir="${classes.dir}/server">
+                <exclude name="**/core/utils/SidedInventoryAdapter.*"/>
+                <exclude name="**/core/utils/SimpleInventory.*"/>
+                <exclude name="**/transport/PipeLogicDiamond.*"/>
+            </fileset>
+            <fileset dir="${classes.dir}/bukkit"/>
+        </jar>
+
+        <java classpath="${src.dir}/srgtooling.jar" classname="nl.hardijzer.fw.applysrg.ApplySrg">
+            <arg value="--srg"/>
+            <arg value="fix.srg"/>
+            <arg value="--translate"/>
+            <arg value="../${jar.dir}/buildcraft-server-${bc.version.full}-mcpc-obf-raw.jar"/>
+            <arg value="../${jar.dir}/buildcraft-server-${bc.version.full}-mcpc-obf.jar"/>
+        </java>
+
+        <delete file="${jar.dir}/buildcraft-server-${bc.version.full}-mcpc-obf-raw.jar"/>
     </target>
     
     <target name="main" depends="clean,package"/>

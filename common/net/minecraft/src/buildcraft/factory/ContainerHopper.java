@@ -13,6 +13,7 @@ public class ContainerHopper extends BuildCraftContainer {
 
 	public ContainerHopper(InventoryPlayer inventory, TileHopper tile) {
 		super(tile.getSizeInventory());
+		this.setPlayer(inventory.player);
 		playerIInventory = inventory;
 		hopper = tile;
 
@@ -37,5 +38,9 @@ public class ContainerHopper extends BuildCraftContainer {
 	@Override
 	public boolean canInteractWith(EntityPlayer entityPlayer) {
 		return hopper.isUseableByPlayer(entityPlayer);
+	}
+
+	public IInventory getInventory() {
+		return hopper;
 	}
 }

@@ -9,12 +9,11 @@
 
 package net.minecraft.src.buildcraft.core;
 
-import net.minecraft.src.Container;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Slot;
+import net.minecraft.src.*;
 
 public abstract class BuildCraftContainer extends Container {
+
+	protected EntityPlayer player;
 
 	private int inventorySize;
 
@@ -42,4 +41,13 @@ public abstract class BuildCraftContainer extends Container {
 		return itemstack;
 	}
 
+
+	public BuildCraftContainer setPlayer(EntityPlayer player) {
+		this.player = player;
+		return this;
+	}
+
+	public EntityPlayer getPlayer() {
+		return this.player;
+	}
 }

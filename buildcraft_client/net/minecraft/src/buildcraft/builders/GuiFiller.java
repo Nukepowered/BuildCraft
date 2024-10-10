@@ -10,6 +10,7 @@
 package net.minecraft.src.buildcraft.builders;
 
 import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.buildcraft.core.DefaultProps;
 import net.minecraft.src.buildcraft.core.GuiBuildCraft;
 import net.minecraft.src.buildcraft.core.utils.StringUtil;
@@ -21,7 +22,7 @@ public class GuiFiller extends GuiBuildCraft {
 	IInventory playerInventory;
 	TileFiller filler;
 
-	public GuiFiller(IInventory playerInventory, TileFiller filler) {
+	public GuiFiller(InventoryPlayer playerInventory, TileFiller filler) {
 		super(new CraftingFiller(playerInventory, filler), filler);
 		this.playerInventory = playerInventory;
 		this.filler = filler;

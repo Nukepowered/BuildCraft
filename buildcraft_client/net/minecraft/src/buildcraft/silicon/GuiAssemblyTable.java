@@ -12,6 +12,7 @@ package net.minecraft.src.buildcraft.silicon;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.buildcraft.api.APIProxy;
@@ -50,8 +51,8 @@ public class GuiAssemblyTable extends GuiAdvancedInterface {
 		}
 	}
 
-	public GuiAssemblyTable(IInventory playerInventory, TileAssemblyTable assemblyTable) {
-		super(new ContainerAssemblyTable(playerInventory, assemblyTable), assemblyTable);
+	public GuiAssemblyTable(EntityPlayer player, TileAssemblyTable assemblyTable) {
+		super(new ContainerAssemblyTable(player, assemblyTable), assemblyTable);
 
 		this.assemblyTable = assemblyTable;
 		xSize = 175;

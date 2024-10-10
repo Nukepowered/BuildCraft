@@ -24,3 +24,8 @@ Your directory structure should look like this:
      |- ...
 
 ***
+
+## Building for bukkit
+Use file with postfix `mcpc`
+1. Deobfuscate with BON
+2. Obfuscate using srgtool with mcp-bukkit mappings, including craftbukkit core as inheritance mapping

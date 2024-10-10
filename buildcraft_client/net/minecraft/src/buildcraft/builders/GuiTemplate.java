@@ -13,6 +13,7 @@ import java.util.Date;
 
 import net.minecraft.src.BuildCraftBuilders;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.buildcraft.core.DefaultProps;
 import net.minecraft.src.buildcraft.core.GuiBuildCraft;
 import net.minecraft.src.buildcraft.core.utils.StringUtil;
@@ -26,7 +27,7 @@ public class GuiTemplate extends GuiBuildCraft {
 
 	boolean editMode = false;
 
-	public GuiTemplate(IInventory playerInventory, TileArchitect template) {
+	public GuiTemplate(InventoryPlayer playerInventory, TileArchitect template) {
 		super(new CraftingTemplate(playerInventory, template), template);
 		this.playerInventory = playerInventory;
 		this.template = template;

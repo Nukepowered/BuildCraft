@@ -9,13 +9,14 @@
 
 package net.minecraft.src.buildcraft.energy;
 
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ICrafting;
 import net.minecraft.src.InventoryPlayer;
 
 public class ContainerEngine extends ContainerEngineRoot {
 
-	public ContainerEngine(InventoryPlayer inventoryplayer, TileEngine tileEngine) {
-		super(inventoryplayer, tileEngine);
+	public ContainerEngine(EntityPlayer player, TileEngine tileEngine) {
+		super(player, tileEngine);
 		// TODO Auto-generated constructor stub
 	}
 

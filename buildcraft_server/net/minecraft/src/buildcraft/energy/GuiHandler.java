@@ -23,10 +23,10 @@ public class GuiHandler implements IGuiHandler {
 		switch (ID) {
 
 		case GuiIds.ENGINE_IRON:
-			return new ContainerEngine(player.inventory, engine);
+			return new ContainerEngine(player, engine);
 
 		case GuiIds.ENGINE_STONE:
-			return new ContainerEngine(player.inventory, engine);
+			return new ContainerEngine(player, engine);
 
 		default:
 			return null;

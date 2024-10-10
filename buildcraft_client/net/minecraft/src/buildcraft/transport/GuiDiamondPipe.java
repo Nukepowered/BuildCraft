@@ -9,6 +9,7 @@
 
 package net.minecraft.src.buildcraft.transport;
 
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.buildcraft.api.APIProxy;
@@ -26,9 +27,9 @@ public class GuiDiamondPipe extends GuiAdvancedInterface {
 	IInventory playerInventory;
 	PipeLogicDiamond filterInventory;
 
-	public GuiDiamondPipe(IInventory playerInventory, TileGenericPipe tile) {
-		super(new CraftingDiamondPipe(playerInventory, (IInventory)tile.pipe.logic), (IInventory)tile.pipe.logic);
-		this.playerInventory = playerInventory;
+	public GuiDiamondPipe(EntityPlayer player, TileGenericPipe tile) {
+		super(new CraftingDiamondPipe(player, (IInventory)tile.pipe.logic), (IInventory)tile.pipe.logic);
+		this.playerInventory = player.inventory;
 		this.filterInventory = (PipeLogicDiamond)tile.pipe.logic;
 		xSize = 175;
 		ySize = 225;

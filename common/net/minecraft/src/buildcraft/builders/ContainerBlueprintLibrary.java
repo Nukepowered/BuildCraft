@@ -26,6 +26,7 @@ class ContainerBlueprintLibrary extends BuildCraftContainer {
 
 	public ContainerBlueprintLibrary(EntityPlayer player, TileBlueprintLibrary library) {
 		super(library.getSizeInventory());
+		this.setPlayer(player);
 		this.playerInventory = player.inventory;
 		this.library = library;
 
@@ -49,5 +50,9 @@ class ContainerBlueprintLibrary extends BuildCraftContainer {
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return library.isUseableByPlayer(entityplayer);
+	}
+
+	public IInventory getInventory() {
+		return library;
 	}
 }

@@ -79,6 +79,7 @@ public class ContainerAutoWorkbench extends BuildCraftContainer {
 
 	public ContainerAutoWorkbench(InventoryPlayer inventoryplayer, TileAutoWorkbench tile) {
 		super(tile.getSizeInventory());
+		this.setPlayer(inventoryplayer.player);
 
 		craftResult = new InventoryCraftResult();
 		this.tile = tile;
@@ -162,4 +163,7 @@ public class ContainerAutoWorkbench extends BuildCraftContainer {
 		return itemstack;
 	}
 
+	public IInventory getInventory() {
+		return tile;
+	}
 }

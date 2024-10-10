@@ -19,17 +19,18 @@ class CraftingDiamondPipe extends BuildCraftContainer {
 	IInventory playerIInventory;
 	IInventory filterIInventory;
 
-	public CraftingDiamondPipe(IInventory playerInventory, IInventory filterInventory) {
+	public CraftingDiamondPipe(EntityPlayer player, IInventory filterInventory) {
 		super(filterInventory.getSizeInventory());
-		this.playerIInventory = playerInventory;
+		this.setPlayer(player);
+		this.playerIInventory = player.inventory;
 		this.filterIInventory = filterInventory;
 
 		for (int l = 0; l < 3; l++)
 			for (int k1 = 0; k1 < 9; k1++)
-				addSlot(new Slot(playerInventory, k1 + l * 9 + 9, 8 + k1 * 18, 140 + l * 18));
+				addSlot(new Slot(playerIInventory, k1 + l * 9 + 9, 8 + k1 * 18, 140 + l * 18));
 
 		for (int i1 = 0; i1 < 9; i1++)
-			addSlot(new Slot(playerInventory, i1, 8 + i1 * 18, 198));
+			addSlot(new Slot(playerIInventory, i1, 8 + i1 * 18, 198));
 	}
 
 	@Override
@@ -37,4 +38,7 @@ class CraftingDiamondPipe extends BuildCraftContainer {
 		return filterIInventory.isUseableByPlayer(entityplayer);
 	}
 
+	public IInventory getInventory() {
+		return filterIInventory;
+	}
 }

@@ -12,6 +12,7 @@ package net.minecraft.src.buildcraft.builders;
 import java.util.Collection;
 
 import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.buildcraft.core.DefaultProps;
 import net.minecraft.src.buildcraft.core.GuiAdvancedInterface;
@@ -24,7 +25,7 @@ public class GuiBuilder extends GuiAdvancedInterface {
 	IInventory playerInventory;
 	TileBuilder builder;
 
-	public GuiBuilder(IInventory playerInventory, TileBuilder builder) {
+	public GuiBuilder(InventoryPlayer playerInventory, TileBuilder builder) {
 		super(new CraftingBuilder(playerInventory, builder), builder);
 		this.playerInventory = playerInventory;
 		this.builder = builder;

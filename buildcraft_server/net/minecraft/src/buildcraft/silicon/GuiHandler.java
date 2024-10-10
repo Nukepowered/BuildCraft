@@ -22,7 +22,7 @@ public class GuiHandler implements IGuiHandler {
 		case GuiIds.ASSEMBLY_TABLE:
 			if (!(tile instanceof TileAssemblyTable))
 				return null;
-			return new ContainerAssemblyTable(player.inventory, (TileAssemblyTable) tile);
+			return new ContainerAssemblyTable(player, (TileAssemblyTable) tile);
 
 		default:
 			return null;

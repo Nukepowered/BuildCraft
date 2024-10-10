@@ -10,16 +10,19 @@
 package net.minecraft.src.buildcraft.energy;
 
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.Slot;
 import net.minecraft.src.buildcraft.core.BuildCraftContainer;
 
 public class ContainerEngineRoot extends BuildCraftContainer {
 
-	public ContainerEngineRoot(InventoryPlayer inventoryplayer, TileEngine tileEngine) {
+	public ContainerEngineRoot(EntityPlayer player, TileEngine tileEngine) {
 		super(tileEngine.getSizeInventory());
 
-		engine = tileEngine;
+		this.engine = tileEngine;
+		this.setPlayer(player);
+		InventoryPlayer inventoryplayer = this.player.inventory;
 
 		if (tileEngine.engine instanceof EngineStone) {
 			addSlot(new Slot(tileEngine, 0, 80, 41));
@@ -48,5 +51,9 @@ public class ContainerEngineRoot extends BuildCraftContainer {
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return engine.isUseableByPlayer(entityplayer);
+	}
+
+	public IInventory getInventory() {
+		return this.engine;
 	}
 }

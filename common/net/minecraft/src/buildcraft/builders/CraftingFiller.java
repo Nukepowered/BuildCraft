@@ -11,6 +11,7 @@ package net.minecraft.src.buildcraft.builders;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.Slot;
 import net.minecraft.src.buildcraft.core.BuildCraftContainer;
 
@@ -19,8 +20,9 @@ class CraftingFiller extends BuildCraftContainer {
 	IInventory playerIInventory;
 	IInventory fillerInventory;
 
-	public CraftingFiller(IInventory playerInventory, IInventory fillerInventory) {
+	public CraftingFiller(InventoryPlayer playerInventory, IInventory fillerInventory) {
 		super(fillerInventory.getSizeInventory());
+		this.setPlayer(playerInventory.player);
 		this.playerIInventory = playerInventory;
 		this.fillerInventory = fillerInventory;
 
@@ -53,4 +55,7 @@ class CraftingFiller extends BuildCraftContainer {
 		return fillerInventory.isUseableByPlayer(entityplayer);
 	}
 
+	public IInventory getInventory() {
+		return fillerInventory;
+	}
 }

@@ -23,7 +23,7 @@ public class GuiHandler implements IGuiHandler {
 		switch (ID) {
 
 		case GuiIds.PIPE_DIAMOND:
-			return new GuiDiamondPipe(player.inventory, pipe);
+			return new GuiDiamondPipe(player, pipe);
 
 		case GuiIds.GATES:
 			return new GuiGateInterface(player.inventory, pipe.pipe);

@@ -8,11 +8,7 @@
  */
 package net.minecraft.src.buildcraft.factory;
 
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.ICrafting;
-import net.minecraft.src.InventoryPlayer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Slot;
+import net.minecraft.src.*;
 import net.minecraft.src.buildcraft.api.APIProxy;
 import net.minecraft.src.buildcraft.core.BuildCraftContainer;
 import net.minecraft.src.buildcraft.core.CoreProxy;
@@ -26,6 +22,7 @@ public class ContainerRefinery extends BuildCraftContainer {
 
 	public ContainerRefinery(InventoryPlayer inventory, TileRefinery refinery) {
 		super(refinery.getSizeInventory());
+		this.setPlayer(inventory.player);
 
 		for (int l = 0; l < 3; l++) {
 			for (int k1 = 0; k1 < 9; k1++) {
@@ -84,5 +81,9 @@ public class ContainerRefinery extends BuildCraftContainer {
 		for (int i = 0; i < crafters.size(); i++) {
 			refinery.sendGUINetworkData(this, (ICrafting) crafters.get(i));
 		}
+	}
+
+	public IInventory getInventory() {
+		return refinery;
 	}
 }

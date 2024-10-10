@@ -11,6 +11,7 @@ package net.minecraft.src.buildcraft.builders;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.Slot;
 import net.minecraft.src.buildcraft.core.BuildCraftContainer;
 
@@ -20,8 +21,9 @@ class CraftingTemplateRoot extends BuildCraftContainer {
 	TileArchitect template;
 	int computingTime = 0;
 
-	public CraftingTemplateRoot(IInventory playerInventory, TileArchitect template) {
+	public CraftingTemplateRoot(InventoryPlayer playerInventory, TileArchitect template) {
 		super(template.getSizeInventory());
+		this.setPlayer(playerInventory.player);
 		this.playerIInventory = playerInventory;
 		this.template = template;
 
@@ -45,4 +47,7 @@ class CraftingTemplateRoot extends BuildCraftContainer {
 		return template.isUseableByPlayer(entityplayer);
 	}
 
+	public IInventory getInventory() {
+		return template;
+	}
 }

@@ -11,10 +11,11 @@ package net.minecraft.src.buildcraft.builders;
 
 import net.minecraft.src.ICrafting;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryPlayer;
 
 class CraftingTemplate extends CraftingTemplateRoot {
 
-	public CraftingTemplate(IInventory playerInventory, TileArchitect template) {
+	public CraftingTemplate(InventoryPlayer playerInventory, TileArchitect template) {
 		super(playerInventory, template);
 	}
 
