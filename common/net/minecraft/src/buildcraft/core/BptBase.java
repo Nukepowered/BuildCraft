@@ -13,12 +13,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.mod_BuildCraftCore;
@@ -104,56 +104,47 @@ public abstract class BptBase {
 	public File save() {
 		try {
 			File baseDir = CoreProxy.getBuildCraftBase();
-
 			baseDir.mkdir();
 
-			if (!file.exists())
-				file.createNewFile();
-
-			FileOutputStream output = new FileOutputStream(file);
-
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, "8859_1"));
-
-			writer.write("version:" + mod_BuildCraftCore.version());
-			writer.newLine();
-
-			if (this instanceof BptTemplate)
-				writer.write("kind:template");
-			else
-				writer.write("kind:blueprint");
-			writer.newLine();
-
-			writer.write("sizeX:" + sizeX);
-			writer.newLine();
-			writer.write("sizeY:" + sizeY);
-			writer.newLine();
-			writer.write("sizeZ:" + sizeZ);
-			writer.newLine();
-			writer.write("anchorX:" + anchorX);
-			writer.newLine();
-			writer.write("anchorY:" + anchorY);
-			writer.newLine();
-			writer.write("anchorZ:" + anchorZ);
-			writer.newLine();
-			writer.write("name:" + name);
-			writer.newLine();
-
-			if (author != null) {
-				writer.write("author:" + author);
+			Path path = file.toPath();
+			try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+				writer.write("version:" + mod_BuildCraftCore.version());
 				writer.newLine();
+
+				if (this instanceof BptTemplate) {
+					writer.write("kind:template");
+				} else {
+					writer.write("kind:blueprint");
+				}
+				writer.newLine();
+
+				writer.write("sizeX:" + sizeX);
+				writer.newLine();
+				writer.write("sizeY:" + sizeY);
+				writer.newLine();
+				writer.write("sizeZ:" + sizeZ);
+				writer.newLine();
+				writer.write("anchorX:" + anchorX);
+				writer.newLine();
+				writer.write("anchorY:" + anchorY);
+				writer.newLine();
+				writer.write("anchorZ:" + anchorZ);
+				writer.newLine();
+				writer.write("name:" + name);
+				writer.newLine();
+
+				if (author != null) {
+					writer.write("author:" + author);
+					writer.newLine();
+				}
+
+				saveAttributes(writer);
+
+				writer.newLine();
+				writer.flush();
 			}
 
-			saveAttributes(writer);
-
-			writer.newLine();
-			writer.flush();
-			output.close();
-
 			return file;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -199,7 +190,7 @@ public abstract class BptBase {
 		try {
 			FileInputStream input = new FileInputStream(file);
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input, "8859_1"));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
 
 			while (true) {
 				String line = reader.readLine();

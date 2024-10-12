@@ -20,13 +20,9 @@ import net.minecraft.src.buildcraft.api.IAreaProvider;
 import net.minecraft.src.buildcraft.api.LaserKind;
 import net.minecraft.src.buildcraft.api.Orientations;
 import net.minecraft.src.buildcraft.api.TileNetworkData;
-import net.minecraft.src.buildcraft.core.Box;
-import net.minecraft.src.buildcraft.core.BptBase;
-import net.minecraft.src.buildcraft.core.BptBlueprint;
-import net.minecraft.src.buildcraft.core.BptContext;
-import net.minecraft.src.buildcraft.core.BptTemplate;
-import net.minecraft.src.buildcraft.core.TileBuildCraft;
-import net.minecraft.src.buildcraft.core.Utils;
+import net.minecraft.src.buildcraft.core.*;
+import net.minecraft.src.buildcraft.core.network.PacketPayload;
+import net.minecraft.src.buildcraft.core.network.PacketTileUpdate;
 import net.minecraft.src.buildcraft.core.network.PacketUpdate;
 
 public class TileArchitect extends TileBuildCraft implements IInventory {
@@ -44,6 +40,21 @@ public class TileArchitect extends TileBuildCraft implements IInventory {
 	// Use that field to avoid creating several times the same template if
 	// they're the same!
 	private int lastBptId = 0;
+
+	public void setBlueprintName(String name) {
+		if (name == null) {
+			name = "";
+		}
+
+		this.name = name;
+		PacketTileUpdate packet = new PacketTileUpdate();
+		packet.posX = xCoord;
+		packet.posY = yCoord;
+		packet.posZ = zCoord;
+		packet.payload = new PacketPayload(0, 0, 1);
+		packet.payload.stringPayload[0] = this.name;
+		CoreProxy.sendToServer(packet.getPacket());
+	}
 
 	@Override
 	public void updateEntity() {
@@ -337,12 +348,19 @@ public class TileArchitect extends TileBuildCraft implements IInventory {
 
 	@Override
 	public void handleUpdatePacket(PacketUpdate packet) {
-		boolean initialized = box.isInitialized();
+		if (APIProxy.isServerSide()) {
+			PacketPayload payload = packet.payload;
+			if (payload != null && payload.stringPayload.length > 0 && payload.stringPayload[0] != null) {
+				this.name = payload.stringPayload[0];
+			}
+		} else {
+			boolean initialized = box.isInitialized();
 
-		super.handleUpdatePacket(packet);
+			super.handleUpdatePacket(packet);
 
-		if (!initialized && box.isInitialized()) {
-			box.createLasers(worldObj, LaserKind.Stripes);
+			if (!initialized && box.isInitialized()) {
+				box.createLasers(worldObj, LaserKind.Stripes);
+			}
 		}
 	}
 

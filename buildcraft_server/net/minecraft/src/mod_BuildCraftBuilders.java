@@ -9,7 +9,9 @@
 
 package net.minecraft.src;
 
+import net.minecraft.src.buildcraft.builders.network.ConnectionHandler;
 import net.minecraft.src.buildcraft.core.DefaultProps;
+import net.minecraft.src.forge.MinecraftForge;
 import net.minecraft.src.forge.NetworkMod;
 
 public class mod_BuildCraftBuilders extends NetworkMod {
@@ -23,6 +25,7 @@ public class mod_BuildCraftBuilders extends NetworkMod {
 	@Override
 	public void load() {
 		BuildCraftBuilders.load();
+		MinecraftForge.registerConnectionHandler(new ConnectionHandler());
 	}
 
 	@Override

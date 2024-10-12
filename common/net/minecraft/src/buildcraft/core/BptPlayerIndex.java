@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.TreeMap;
 
 public class BptPlayerIndex {
@@ -36,7 +37,7 @@ public class BptPlayerIndex {
 	public void loadIndex() throws IOException {
 		FileInputStream input = new FileInputStream(file);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(input, "8859_1"));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
 
 		while (true) {
 			String line = reader.readLine();
@@ -62,7 +63,7 @@ public class BptPlayerIndex {
 
 	public void saveIndex() throws IOException {
 		FileOutputStream output = new FileOutputStream(file);
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, "8859_1"));
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
 
 		for (String line : bluePrintsFile.keySet()) {
 			writer.write(line);

@@ -82,13 +82,15 @@ public class GuiTemplate extends GuiBuildCraft {
 
 				return;
 			} else if (c == 8) {
-				if (template.name.length() > 0)
-					template.name = template.name.substring(0, template.name.length() - 1);
+				if (!template.name.isEmpty()) {
+					template.setBlueprintName(template.name.substring(0, template.name.length() - 1));
+				}
 
 				return;
 			} else if (Character.isLetterOrDigit(c) || c == ' ') {
-				if (fontRenderer.getStringWidth(template.name + c) <= BuildCraftBuilders.MAX_BLUEPRINTS_NAME_SIZE)
-					template.name += c;
+				if (fontRenderer.getStringWidth(template.name + c) <= BuildCraftBuilders.MAX_BLUEPRINTS_NAME_SIZE) {
+					template.setBlueprintName(template.name + c);
+				}
 
 				return;
 			}
