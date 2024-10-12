@@ -192,6 +192,7 @@
                 <exclude name="**/core/utils/SidedInventoryAdapter.*"/>
                 <exclude name="**/core/utils/SimpleInventory.*"/>
                 <exclude name="**/transport/PipeLogicDiamond.*"/>
+                <exclude name="**/api/APIProxy*"/>
             </fileset>
             <fileset dir="${classes.dir}/bukkit"/>
         </jar>
