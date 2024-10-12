@@ -9,16 +9,10 @@
 
 package net.minecraft.src.buildcraft.factory;
 
+import java.lang.reflect.Field;
 import java.util.LinkedList;
 
-import net.minecraft.src.Container;
-import net.minecraft.src.CraftingManager;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryCrafting;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.TileEntity;
+import net.minecraft.src.*;
 import net.minecraft.src.buildcraft.api.ISpecialInventory;
 import net.minecraft.src.buildcraft.api.Orientations;
 import net.minecraft.src.buildcraft.api.Position;
@@ -27,9 +21,11 @@ import net.minecraft.src.buildcraft.core.Utils;
 
 public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 
+	private static Field resultInventory = null;
+
 	private ItemStack stackList[] = new ItemStack[9];
 
-	class LocalInventoryCrafting extends InventoryCrafting {
+	static class LocalInventoryCrafting extends InventoryCrafting {
 
 		public LocalInventoryCrafting() {
 			super(new Container() {
@@ -162,7 +158,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 	}
 
 	public ItemStack findRecipe() {
-		InventoryCrafting craftMatrix = new LocalInventoryCrafting();
+		InventoryCrafting craftMatrix = this.createCraftingMatrix();
 
 		for (int i = 0; i < getSizeInventory(); ++i) {
 			ItemStack stack = getStackInSlot(i);
@@ -176,8 +172,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 	}
 
 	public ItemStack extractItem(boolean doRemove, boolean removeRecipe) {
-		InventoryCrafting craftMatrix = new LocalInventoryCrafting();
-
+		InventoryCrafting craftMatrix = this.createCraftingMatrix();
 		LinkedList<StackPointer> pointerList = new LinkedList<StackPointer>();
 
 		int itemsToLeave = (removeRecipe ? 0 : 1);
@@ -316,4 +311,20 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 
 	}
 
+	private LocalInventoryCrafting createCraftingMatrix() {
+		LocalInventoryCrafting craftMatrix = new LocalInventoryCrafting();
+		if (resultInventory != null) {
+			try {
+				resultInventory.set(craftMatrix, new InventoryCraftResult());
+			} catch (Exception ignored) {}
+		}
+
+		return craftMatrix;
+	}
+
+	static {
+		try {
+			resultInventory = LocalInventoryCrafting.class.getField("resultInventory");
+		} catch (Exception ignored) {}
+	}
 }
