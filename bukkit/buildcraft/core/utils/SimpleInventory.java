@@ -9,7 +9,7 @@
 package buildcraft.core.utils;
 
 import net.minecraft.src.*;
-import net.minecraft.src.buildcraft.core.utils.INBTTagable;
+import net.minecraft.src.buildcraft.core.utils.ISimpleInventory;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.InventoryHolder;
@@ -17,7 +17,7 @@ import org.bukkit.inventory.InventoryHolder;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SimpleInventory implements IInventory, INBTTagable {
+public class SimpleInventory implements ISimpleInventory {
 
 	private final ItemStack[] _contents;
 	private final String _name;

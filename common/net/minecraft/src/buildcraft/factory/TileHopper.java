@@ -9,6 +9,7 @@ import net.minecraft.src.buildcraft.api.APIProxy;
 import net.minecraft.src.buildcraft.api.ISpecialInventory;
 import net.minecraft.src.buildcraft.api.Orientations;
 import net.minecraft.src.buildcraft.core.TileBuildCraft;
+import net.minecraft.src.buildcraft.core.utils.ISimpleInventory;
 import net.minecraft.src.buildcraft.core.utils.InventoryUtil;
 import net.minecraft.src.buildcraft.core.utils.SidedInventoryAdapter;
 import net.minecraft.src.buildcraft.core.utils.SimpleInventory;
@@ -16,7 +17,7 @@ import net.minecraft.src.forge.ISidedInventory;
 
 public class TileHopper extends TileBuildCraft implements IInventory {
 
-	private final SimpleInventory _inventory = new SimpleInventory(4, "Hopper", 64);
+	private final ISimpleInventory _inventory = new SimpleInventory(4, "Hopper", 64);
 	private final InventoryUtil _internalInventory = new InventoryUtil(_inventory);
 
 	@Override

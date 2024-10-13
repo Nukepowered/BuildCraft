@@ -14,7 +14,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 
-public class SimpleInventory implements IInventory, INBTTagable {
+public class SimpleInventory implements ISimpleInventory {
 
 	private final ItemStack[] _contents;
 	private final String _name;
