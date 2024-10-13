@@ -11,10 +11,7 @@ package net.minecraft.src.buildcraft.core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +33,7 @@ public abstract class BptBase {
 
 	public String author;
 
-	public File file;
+	public Path file;
 
 	protected String version = "";
 
@@ -101,13 +98,11 @@ public abstract class BptBase {
 		context.rotateLeft();
 	}
 
-	public File save() {
+	public Path save() {
 		try {
-			File baseDir = CoreProxy.getBuildCraftBase();
-			baseDir.mkdir();
+			Files.createDirectories(CoreProxy.getBuildCraftBase().toPath());
 
-			Path path = file.toPath();
-			try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+			try (BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
 				writer.write("version:" + mod_BuildCraftCore.version());
 				writer.newLine();
 
@@ -182,16 +177,12 @@ public abstract class BptBase {
 		return true;
 	}
 
-	public static BptBase loadBluePrint(File file, int position) {
+	public static BptBase loadBluePrint(Path file, int position) {
 		BptBase result = null;
 
 		String version = null;
 
-		try {
-			FileInputStream input = new FileInputStream(file);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
-
+		try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			while (true) {
 				String line = reader.readLine();
 
@@ -254,6 +245,10 @@ public abstract class BptBase {
 			return "#" + position;
 		else
 			return name;
+	}
+
+	public String getFileName() {
+		return file.getFileName().toString();
 	}
 
 	@Override

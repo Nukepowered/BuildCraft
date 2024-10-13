@@ -2,32 +2,30 @@ package net.minecraft.src.buildcraft.core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.TreeMap;
 
 public class BptPlayerIndex {
 
-	private TreeMap<String, File> bluePrintsFile = new TreeMap<String, File>();
+	private final TreeMap<String, Path> bluePrintsFile = new TreeMap<>();
 
-	private File baseDir;
-	private File file;
+	private final Path baseDir;
+	private final Path file;
 
 	public BptPlayerIndex(String filename, BptRootIndex rootIndex) throws IOException {
-		baseDir = new File(CoreProxy.getBuildCraftBase(), "blueprints/");
-		file = new File(baseDir, filename);
-		baseDir.mkdir();
+		baseDir = CoreProxy.getBuildCraftBase().toPath().resolve("blueprints/");
+		file = baseDir.resolve(filename);
+		Files.createDirectories(baseDir);
 
-		if (!file.exists()) {
-			file.createNewFile();
+		if (Files.notExists(file)) {
+			Files.createFile(file);
 
-			for (String file : rootIndex.filesSet.keySet())
-				bluePrintsFile.put(file, new File(baseDir, file));
+			for (String file : rootIndex.filesSet.keySet()) {
+				bluePrintsFile.put(file, baseDir.resolve(file));
+			}
 
 			saveIndex();
 		} else
@@ -35,43 +33,34 @@ public class BptPlayerIndex {
 	}
 
 	public void loadIndex() throws IOException {
-		FileInputStream input = new FileInputStream(file);
+		try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+			while (true) {
+				String line = reader.readLine();
+				if (line == null) {
+					break;
+				}
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
-
-		while (true) {
-			String line = reader.readLine();
-
-			if (line == null)
-				break;
-
-			line = line.replaceAll("\\n", "");
-
-			File bptFile = new File(baseDir, line);
-
-			bluePrintsFile.put(line, bptFile);
+				line = line.replaceAll("\\n", "");
+				Path bptFile = baseDir.resolve(line);
+				bluePrintsFile.put(line, bptFile);
+			}
 		}
-
-		input.close();
 	}
 
-	public void addBlueprint(File file) throws IOException {
-		bluePrintsFile.put(file.getName(), file);
-
+	public void addBlueprint(Path file) throws IOException {
+		bluePrintsFile.put(file.getFileName().toString(), file);
 		saveIndex();
 	}
 
 	public void saveIndex() throws IOException {
-		FileOutputStream output = new FileOutputStream(file);
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
+		try (BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
+			for (String line : bluePrintsFile.keySet()) {
+				writer.write(line);
+				writer.newLine();
+			}
 
-		for (String line : bluePrintsFile.keySet()) {
-			writer.write(line);
-			writer.newLine();
+			writer.flush();
 		}
-
-		writer.flush();
-		output.close();
 	}
 
 	public void deleteBluePrint(String fileName) {

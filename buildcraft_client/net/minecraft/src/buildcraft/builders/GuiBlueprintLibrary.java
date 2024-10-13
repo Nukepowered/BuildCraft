@@ -125,10 +125,11 @@ public class GuiBlueprintLibrary extends GuiBuildCraft {
 			computeInput = true;
 		else if (computeInput) {
 			// In this case, there was a store computation that has finished.
-			if (container.contents.size() == 0)
+			if (container.contents.isEmpty()) {
 				container.contents = library.getNextPage(null);
-			else
-				container.contents = library.getNextPage(index.prevBpt(container.contents.getFirst().file.getName()));
+			} else {
+				container.contents = library.getNextPage(index.prevBpt(container.contents.getFirst().getFileName()));
+			}
 
 			computeInput = false;
 		}
@@ -155,12 +156,12 @@ public class GuiBlueprintLibrary extends GuiBuildCraft {
 					library.selected = container.contents.get(ySlot);
 		} else if (nextPageButton.mousePressed(ModLoader.getMinecraftInstance(), i, j)) {
 			if (container.contents.size() > 0)
-				container.contents = library.getNextPage(container.contents.getLast().file.getName());
+				container.contents = library.getNextPage(container.contents.getLast().getFileName());
 			else
 				container.contents = library.getNextPage(null);
 		} else if (prevPageButton.mousePressed(ModLoader.getMinecraftInstance(), i, j)) {
 			if (container.contents.size() > 0)
-				container.contents = library.getPrevPage(container.contents.getFirst().file.getName());
+				container.contents = library.getPrevPage(container.contents.getFirst().getFileName());
 			else
 				container.contents = library.getNextPage(null);
 		} else if (lockButton != null && lockButton.mousePressed(ModLoader.getMinecraftInstance(), i, j)) {
@@ -172,9 +173,9 @@ public class GuiBlueprintLibrary extends GuiBuildCraft {
 				lockButton.displayString = StringUtil.localize("gui.lock");
 		} else if (deleteButton != null && deleteButton.mousePressed(ModLoader.getMinecraftInstance(), i, j))
 			if (library.selected != null) {
-				index.deleteBluePrint(library.selected.file.getName());
+				index.deleteBluePrint(library.selected.getFileName());
 				if (container.contents.size() > 0)
-					container.contents = library.getNextPage(index.prevBpt(container.contents.getFirst().file.getName()));
+					container.contents = library.getNextPage(index.prevBpt(container.contents.getFirst().getFileName()));
 				else
 					container.contents = library.getNextPage(null);
 
