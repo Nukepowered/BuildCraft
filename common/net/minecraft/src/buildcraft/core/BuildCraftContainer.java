@@ -42,9 +42,8 @@ public abstract class BuildCraftContainer extends Container {
 	}
 
 
-	public BuildCraftContainer setPlayer(EntityPlayer player) {
+	public void setPlayer(EntityPlayer player) {
 		this.player = player;
-		return this;
 	}
 
 	public EntityPlayer getPlayer() {
