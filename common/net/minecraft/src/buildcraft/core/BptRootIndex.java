@@ -68,7 +68,6 @@ public class BptRootIndex {
 	public void importNewFiles() throws IOException {
 		try (Stream<Path> stream = Files.list(baseDir)) {
 			for (Path path : stream.collect(Collectors.toList())) {
-				System.out.println(path);
 				if (Files.isDirectory(path)) {
 					continue;
 				}
