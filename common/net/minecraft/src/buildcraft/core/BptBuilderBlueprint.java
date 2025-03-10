@@ -347,7 +347,7 @@ public class BptBuilderBlueprint extends BptBuilderBase {
 			}
 
 			for (ItemStack stack : stacks) {
-				if (stack == null || stack.itemID == 0)
+				if (stack == null || stack.itemID <= 0)
 					continue;
 
 				if (!computeStacks.containsKey(stack))
@@ -366,7 +366,7 @@ public class BptBuilderBlueprint extends BptBuilderBase {
 			LinkedList<ItemStack> stacks = slot.getRequirements(context);
 
 			for (ItemStack stack : stacks) {
-				if (stack == null || stack.itemID == 0 || stack.stackSize == 0)
+				if (stack == null || stack.itemID <= 0 || stack.stackSize == 0)
 					continue;
 
 				if (!computeStacks.containsKey(stack))

@@ -196,7 +196,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 			}
 		}
 
-		if (builder == null) {
+		if (builder == null && arm != null) {
 			
 			dig();
 		}
